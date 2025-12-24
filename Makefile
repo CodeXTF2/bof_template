@@ -27,15 +27,11 @@ OBJS_x86 := $(ENTRY_OBJ_x86) $(COMMON_OBJS_x86)
 
 .PHONY: all clean check scanbuild test binaries
 
-# ---------------------------------------------------------
-# MODIFIED ALL TARGET
-# 1. Runs 'clean'
-# 2. Recursively runs 'make binaries' to ensure sequential execution
-# ---------------------------------------------------------
+
 all: clean
 	@$(MAKE) --no-print-directory binaries
 
-# This target contains the actual build logic that 'all' used to have
+
 binaries: dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
 
 # Linking stage
