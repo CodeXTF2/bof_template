@@ -25,18 +25,27 @@ ENTRY_OBJ_x86 := build/entry.x86.o
 OBJS_x64 := $(ENTRY_OBJ_x64) $(COMMON_OBJS_x64)
 OBJS_x86 := $(ENTRY_OBJ_x86) $(COMMON_OBJS_x86)
 
-.PHONY: all clean check scanbuild test
+.PHONY: all clean check scanbuild test binaries
 
-all: dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
+# ---------------------------------------------------------
+# MODIFIED ALL TARGET
+# 1. Runs 'clean'
+# 2. Recursively runs 'make binaries' to ensure sequential execution
+# ---------------------------------------------------------
+all: clean
+	@$(MAKE) --no-print-directory binaries
+
+# This target contains the actual build logic that 'all' used to have
+binaries: dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
 
 # Linking stage
 dist/$(BOFNAME).x64.o: $(OBJS_x64)
 	@mkdir -p dist
-	$(BOFLINK) -L/usr/x86_64-w64-mingw32/lib $(OBJS_x64) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -o $@
+	$(BOFLINK) -L/usr/x86_64-w64-mingw32/lib $(OBJS_x64) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lole32 -llocationapi -o $@
 
 dist/$(BOFNAME).x86.o: $(OBJS_x86)
 	@mkdir -p dist
-	$(BOFLINK) -L/usr/i686-w64-mingw32/lib $(OBJS_x86) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -o $@
+	$(BOFLINK) -L/usr/i686-w64-mingw32/lib $(OBJS_x86) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lole32 -llocationapi -o $@
 
 # Compilation stage for entry.c
 $(ENTRY_OBJ_x64): entry.c
