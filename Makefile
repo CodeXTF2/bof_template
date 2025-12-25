@@ -25,23 +25,19 @@ ENTRY_OBJ_x86 := build/entry.x86.o
 OBJS_x64 := $(ENTRY_OBJ_x64) $(COMMON_OBJS_x64)
 OBJS_x86 := $(ENTRY_OBJ_x86) $(COMMON_OBJS_x86)
 
-.PHONY: all clean check scanbuild test binaries
+.PHONY: all clean check scanbuild test
 
-
-all: clean
-	@$(MAKE) --no-print-directory binaries
-
-
-binaries: dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
+all: clean dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
 
 # Linking stage
+# Removed -lucrt to prioritize the ubiquitous msvcrt.dll
 dist/$(BOFNAME).x64.o: $(OBJS_x64)
 	@mkdir -p dist
-	$(BOFLINK) -L/usr/x86_64-w64-mingw32/lib $(OBJS_x64) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lole32 -llocationapi -o $@
+	$(BOFLINK) -L/usr/x86_64-w64-mingw32/lib $(OBJS_x64) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lgdi32 -luser32 -lws2_32 -lshell32 -lcomdlg32 -lole32 -loleaut32 -luuid -lwininet -lcrypt32 -ldbghelp -lversion -lsetupapi -o $@
 
 dist/$(BOFNAME).x86.o: $(OBJS_x86)
 	@mkdir -p dist
-	$(BOFLINK) -L/usr/i686-w64-mingw32/lib $(OBJS_x86) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lole32 -llocationapi -o $@
+	$(BOFLINK) -L/usr/i686-w64-mingw32/lib $(OBJS_x86) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lgdi32 -luser32 -lws2_32 -lshell32 -lcomdlg32 -lole32 -loleaut32 -luuid -lwininet -lcrypt32 -ldbghelp -lversion -lsetupapi -o $@
 
 # Compilation stage for entry.c
 $(ENTRY_OBJ_x64): entry.c
