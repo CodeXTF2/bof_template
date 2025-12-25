@@ -30,7 +30,7 @@ OBJS_x86 := $(ENTRY_OBJ_x86) $(COMMON_OBJS_x86)
 all: clean dist/$(BOFNAME).x64.o dist/$(BOFNAME).x86.o
 
 # Linking stage
-# Removed -lucrt to prioritize the ubiquitous msvcrt.dll
+
 dist/$(BOFNAME).x64.o: $(OBJS_x64)
 	@mkdir -p dist
 	$(BOFLINK) -L/usr/x86_64-w64-mingw32/lib $(OBJS_x64) --entry=go -lkernel32 -lmsvcrt -lntdll -ladvapi32 -lucrt -lgdi32 -luser32 -lws2_32 -lshell32 -lcomdlg32 -lole32 -loleaut32 -luuid -lwininet -lcrypt32 -ldbghelp -lversion -lsetupapi -o $@
