@@ -1,6 +1,6 @@
 # bof(link) template
 
-Simple modified version of the [TrustedSec BOF template](github.com/trustedsec/CS-Situational-Awareness-BOF/tree/master/src/base_template) that incorporates [boflink](https://github.com/MEhrn00/boflink) to make my life easier
+Simple modified version of the [TrustedSec BOF template](https://github.com/trustedsec/CS-Situational-Awareness-BOF/tree/master/src/base_template) that incorporates [boflink](https://github.com/MEhrn00/boflink) to make my life easier
 
 Links against the common windows libs available in mingw-w64 in the makefile by default. If you need to add others, just add the required -l(libname) flags to the boflink commands e.g. ```-lkernel32 ```
 
@@ -12,4 +12,5 @@ Dummy code is in the entry.c as a placeholder to sanity check that boflink is wo
 Credits:
 - https://github.com/MEhrn00/boflink
 - https://github.com/trustedsec/CS-Situational-Awareness-BOF/tree/master/src/base_template
+
 
