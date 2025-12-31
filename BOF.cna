@@ -1,0 +1,29 @@
+# Register command
+beacon_command_register(
+    "bof",
+    "BOF desc",
+    "Use: bof"
+);
+
+alias listmodules {
+    local('$bid $barch $handle $data $args');
+    $bid = $1;
+    
+    # Figure out the arch of this session
+    $barch = barch($bid);
+
+    # Read in the right BOF file from the 'dist' directory
+    # Note: script_resource looks relative to where this .cna file is loaded
+    $handle = openf(script_resource("dist/bof. $+ $barch $+ .o"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+    # Pack empty arguments since no args are required
+    $args = bof_pack($1,"");
+
+    # Announce what we're doing
+    btask($bid, "Running BOF");
+
+    # Execute it
+    beacon_inline_execute($bid, $data, "go", $args);
+}
