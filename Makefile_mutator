@@ -5,6 +5,8 @@ LIBINCLUDE :=
 # Compiler settings
 # -nostdlib is used to prevent linking against standard system startup files
 MUTATOR := ./mutator/docker_mutator.sh
+override OBFUSCATIONS := flattening,substitution,split-basic-blocks,bogus
+export OBFUSCATIONS
 CC_x64 := $(MUTATOR) x64 -nostdlib
 CC_x86 := $(MUTATOR) x86 -nostdlib
 CXX_x64 := x86_64-w64-mingw32-g++
